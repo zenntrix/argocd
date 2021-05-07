@@ -1,4 +1,4 @@
 apiVersion: v2
 description: ArgoCD Cluster Definitions
-name: argocd-cluster-definition
+name: argocd
 version: 1.0.0

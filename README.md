@@ -1,1 +1,1 @@
-# Argo application od applications helm chart
+# Argo application of applications helm chart
