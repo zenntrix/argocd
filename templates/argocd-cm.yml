@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  url: {{ .Values.argo_url }}
+
+{{- if .Values.repositories }}
+{{- if .Values.repositories.repos }}
+  repositories: |
+    {{- .Values.repositories.repos | toYaml | nindent 4 }}
+{{- end }}
+
+{{- if .Values.repositories.credentials }}
+  repository.credentials: |
+    {{- .Values.repositories.credentials | toYaml | nindent 4 }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.authenticationConnectors }}
+  dex.config: |
+    connectors:
+      {{- .Values.authenticationConnectors | toYaml | nindent 6 }}
+{{- end }}

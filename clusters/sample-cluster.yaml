@@ -1,0 +1,24 @@
+cluster:
+  name: sample-cluster
+  url: https://kubernetes.default.svc
+  default:
+    project: default
+    target: master
+
+applications:
+  grafana:
+    name: grafana
+    namespace:
+      - monitoring
+    repo: https://grafana.github.io/helm-charts
+    chart: grafana
+    target: 6.6.4
+
+  prometheus:
+    name: prom
+    namespace:
+      - monitoring
+    repo: https://github.com/prometheus-community/helm-charts.git
+    path: charts/prometheus
+    target: prometheus-13.6.0
+        

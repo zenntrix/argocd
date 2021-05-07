@@ -1,0 +1,49 @@
+{{- range .Values.applications -}}
+{{- if not .disabled -}}
+{{- $app := . }}
+{{- range .namespace }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ required "cluster.name is required" $.Values.cluster.name }}-{{ required "application .name is required" $app.name }}{{ if ne (len $app.namespace) 1 }}-{{ . }}{{ end }}
+  namespace: argocd
+
+spec:
+  project: {{ $app.project | default $.Values.cluster.default.project }}
+  destination:
+    namespace: {{ required "namespace is required" . }}
+{{- if $app.server }}
+    server: {{ $app.server }}
+{{- else }}
+    server: {{ required "cluster.url is required" $.Values.cluster.url }}
+{{- end }}
+  source:
+    helm:
+{{- if $app.parameters }}
+      parameters:
+{{ toYaml $app.parameters | indent 8 }}
+{{- end }}
+      valueFiles:
+      - values.yaml
+{{- if $.Values.cluster.globalValuesFile }}
+      - {{ $.Values.cluster.globalValuesFile }}
+{{- end }}
+{{- if $app.valuesFiles }}
+{{ toYaml $app.valuesFiles | indent 6 }}
+{{- end }}
+{{- if $app.path }}
+    path: {{ $app.path }}
+{{- else if $app.chart }}
+    chart: {{ $app.chart }}
+{{- else }}
+    path: .
+{{- end }}
+    repoURL: {{ required "repo is required" $app.repo }}
+    targetRevision: {{ $app.target | default $.Values.cluster.default.target }}
+  syncPolicy:
+    automated:
+      prune: {{ $app.prune | default "true" }}
+---
+{{- end }}
+{{- end }}
+{{- end }}
