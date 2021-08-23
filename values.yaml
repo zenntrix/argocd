@@ -1,40 +1,41 @@
 ---
-argo_url: https://my-awesome-k8-cluster.homelab/argo/
+argo-cd:
+  argo_url: https://my-awesome-k8-cluster.homelab/argo/
 
-#authenticationConnectors:
-#  - type: ldap
-#    id: ldap
-#    name: IPA
-#    config:
-#      host: ipa-host.my-awesome-k8-cluster.homelab
-#      insecureNoSSL: false
-#      insecureSkipVerify: true
-#      bindDN: uid=proc_directoryread,cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-#      bindPW: super_secure_and_complex_password;
-#      userSearch:
-#        baseDN: cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-#        filter: "(memberOf=cn=argo_developer,cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab)"
-#        username: uid
-#        idAttr: DN
-#        emailAttr: mail
-#        nameAttr: cn
-#      groupSearch:
-#        baseDN: cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-#        filter: "(objectClass=posixgroup)"
-#        userAttr: DN
-#        groupAttr: member
-#        nameAttr: cn
+  #authenticationConnectors:
+  #  - type: ldap
+  #    id: ldap
+  #    name: IPA
+  #    config:
+  #      host: ipa-host.my-awesome-k8-cluster.homelab
+  #      insecureNoSSL: false
+  #      insecureSkipVerify: true
+  #      bindDN: uid=proc_directoryread,cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+  #      bindPW: super_secure_and_complex_password;
+  #      userSearch:
+  #        baseDN: cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+  #        filter: "(memberOf=cn=argo_developer,cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab)"
+  #        username: uid
+  #        idAttr: DN
+  #        emailAttr: mail
+  #        nameAttr: cn
+  #      groupSearch:
+  #        baseDN: cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+  #        filter: "(objectClass=posixgroup)"
+  #        userAttr: DN
+  #        groupAttr: member
+  #        nameAttr: cn
 
-repositories:
-#  credentials: 
-#    - url: https://github.com/
-#      usernameSecret:
-#        key: username
-#        name: github-creds
-#      passwordSecret:
-#        key: password
-#        name: github-creds
-  repos:
-    - url: https://github.com/zenntrix/argocd.git
-    - url: https://grafana.github.io/helm-charts
-      type: helm
+  repositories:
+  #  credentials: 
+  #    - url: https://github.com/
+  #      usernameSecret:
+  #        key: username
+  #        name: github-creds
+  #      passwordSecret:
+  #        key: password
+  #        name: github-creds
+    repos:
+      - url: https://github.com/zenntrix/argocd.git
+      - url: https://grafana.github.io/helm-charts
+        type: helm
