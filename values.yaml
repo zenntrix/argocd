@@ -1,41 +1,83 @@
 ---
 argo-cd:
-  argo_url: https://my-awesome-k8-cluster.homelab/argo/
+  server:
+    extraArgs:
+      - --insecure
+      - --rootpath
+      - /argo
+      
+    ingress:
+      enabled: "true"
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      paths:
+        - /argo
+      hosts:
+        - my-awesome-k8-cluster.homelab
+      https: true
+      
+    ingressGrpc:
+      enabled: "true"
+      annotations:
+        kubernetes.io/ingress.class: nginx
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      paths:
+        - /argo-grpc
+      hosts:
+        - my-awesome-k8-cluster.homelab
+        
+    config:
+      url: https://my-awesome-k8-cluster.homelab/argo/
+      resource.customaizations: |
+        networking.k8s.io/Ingress:
+          health.lua:
+            hs = {}
+            hs.status = "Healthy"
+            return hs
+          extensions/Ingress:
+            hs = {}
+            hs.status = "Healthy"
+            return hs
+          Service:
+            hs = {}
+            hs.status = "Healthy"
+            return hs
 
-  #authenticationConnectors:
-  #  - type: ldap
-  #    id: ldap
-  #    name: IPA
-  #    config:
-  #      host: ipa-host.my-awesome-k8-cluster.homelab
-  #      insecureNoSSL: false
-  #      insecureSkipVerify: true
-  #      bindDN: uid=proc_directoryread,cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-  #      bindPW: super_secure_and_complex_password;
-  #      userSearch:
-  #        baseDN: cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-  #        filter: "(memberOf=cn=argo_developer,cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab)"
-  #        username: uid
-  #        idAttr: DN
-  #        emailAttr: mail
-  #        nameAttr: cn
-  #      groupSearch:
-  #        baseDN: cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
-  #        filter: "(objectClass=posixgroup)"
-  #        userAttr: DN
-  #        groupAttr: member
-  #        nameAttr: cn
+#      dex.config: |
+#        connectors:
+#           - type: ldap
+#             id: ldap
+#             name: IPA
+#             config:
+#               host: ipa-host.my-awesome-k8-cluster.homelab
+#               insecureNoSSL: false
+#               insecureSkipVerify: true
+#               bindDN: uid=proc_directoryread,cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+#               bindPW: super_secure_and_complex_password;
+#               userSearch:
+#                 baseDN: cn=users,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+#                 filter: "(memberOf=cn=argo_developer,cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab)"
+#                 username: uid
+#                 idAttr: DN
+#                 emailAttr: mail
+#                 nameAttr: cn
+#               groupSearch:
+#                 baseDN: cn=groups,cn=accounts,dc=my-awesome-k8-cluster,dc=homelab
+#                 filter: "(objectClass=posixgroup)"
+#                 userAttr: DN
+#                 groupAttr: member
+#                 nameAttr: cn
 
-  repositories:
-  #  credentials: 
-  #    - url: https://github.com/
-  #      usernameSecret:
-  #        key: username
-  #        name: github-creds
-  #      passwordSecret:
-  #        key: password
-  #        name: github-creds
-    repos:
-      - url: https://github.com/zenntrix/argocd.git
-      - url: https://grafana.github.io/helm-charts
-        type: helm
+#      repository.credentials:
+#        - sshPrivateKeySecret:
+#          key: 
+#          name:
+#          url:
+#          insecureIgnoreHostKey: true
+#  configs:
+#    knownHosts:
+#      data:
+#        ssh_known_hosts: |
