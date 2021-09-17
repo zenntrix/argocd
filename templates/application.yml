@@ -5,8 +5,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ required "cluster.name is required" $.Values.cluster.name }}-{{ required "application .name is required" $app.name }}{{ if ne (len $app.
-  ) 1 }}-{{ . }}{{ end }}
+  name: {{ required "cluster.name is required" $.Values.cluster.name }}-{{ required "application .name is required" $app.name }}{{ if ne (len $app.namespace) 1 }}-{{ . }}{{ end }}
   namespace: argocd
 
 spec:
